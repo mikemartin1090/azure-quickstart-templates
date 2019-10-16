@@ -2,6 +2,12 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+      "existingRGWithVNETs": {
+      "type": "string",
+      "metadata": {
+        "description": "Existing resource group that contains the VNET and subnet of the network you would like to use"
+      }
+    },
     "existingVNETName": {
       "type": "string",
       "metadata": {
@@ -22,7 +28,7 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_A2",
+      "defaultValue": "Standard_D2s_v3",
       "metadata": {
         "description": "The size of the virtual machines"
       }
@@ -86,7 +92,7 @@
     "windowsOSVersion": "2016-Datacenter",
     "nicName": "[concat(parameters('dnsLabelPrefix'),'Nic')]",
     "publicIPName": "[concat(parameters('dnsLabelPrefix'),'Pip')]",
-    "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('existingVNETName'), parameters('existingSubnetName'))]"
+    "subnetId": "[resourceId(parameters('existingRGWithVNETs'), 'Microsoft.Network/virtualNetworks/subnets', parameters('existingVNETName'), parameters('existingSubnetName'))]"
   },
   "resources": [
     {
